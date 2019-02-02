@@ -5,11 +5,4 @@ Archive tool for Slovak Central electronic bureau dashboard (Centrálnej elektro
 ## install
 
 -   run `npm install`
--   create file `.env` in a root folder with URL env variable.
-
-```
-URL=cuet.slovensko.sk
-AWS_USER_KEY=
-AWS_USER_SECRET=
-AWS_BUCKET_NAME=
-```
+-   rename file `example.env` to `.env` in a root folder.
