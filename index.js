@@ -1,18 +1,53 @@
 require('dotenv').config() // load .env
 const cheerio = require('cheerio')
 const rp = require('request-promise-native')
-const help = require('./helpers')
+const { log, err } = require('./helpers')
 
 const https = `https://`
 
 const { URL } = process.env
 if (!URL) throw new Error("URL is not define, don't know what to scrape.")
 
-help.log('Scraping domain: ', URL)
+log('Scraping domain: ', URL)
 
-const run = async () => {
-    const res = await rp(`${https}${URL}`)
-    help.log(res)
+// genQuery :: (String, String) => String
+const genQuery = (key, value) => `&${key}=${value}`
+
+// genQuery :: (String, String) => String
+const startQuery = (key, value) => `?${key}=${value}`
+
+// addQuery :: Object => String
+const addQuery = obj => {
+    let result = ''
+    for (const prop in obj) {
+        if (result === '') result = startQuery(prop, obj[prop])
+        else result = result + genQuery(prop, obj[prop])
+    }
+    return result
 }
 
-run().catch(help.err)
+const options = {
+    DocumentPublishedFrom: '01.02.2019',
+    AlternativePublicationCheck: false,
+    AlternativeTypeCode: '',
+    DocumentTypeCode: ''
+}
+
+const run = async () => {
+    const uri = `${https}${URL}${addQuery(options)}`
+    console.log(uri)
+    const html = await rp(uri)
+    const $ = cheerio.load(html)
+    log($('p', '.searchPage').text())
+    // const data = $('div.searchWrapper', '.grid')
+    //     .map(elem => {
+    //         return $(elem)
+    //             .find('a', '.button')
+    //             .map(item => $(item).attr('href'))
+    //     })
+    //     .get()
+    const data = $('div.searchWrapper', '.grid')
+    console.log(data)
+}
+
+run().catch(err)
