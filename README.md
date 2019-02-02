@@ -1,2 +1,2 @@
 # archive-cuet
-Archive for Slovak Central electronic bureau dashboard (Centrálnej elektronickej úradnej tabuli) 
+Archive tool for Slovak Central electronic bureau dashboard (Centrálnej elektronickej úradnej tabuli) 
