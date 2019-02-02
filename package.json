@@ -1,0 +1,42 @@
+{
+  "name": "archive-cuet",
+  "version": "1.0.0",
+  "description": "Archive for Slovak Central electronic bureau dashboard (Centrálnej elektronickej úradnej tabuli)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "dev": "nodemon .",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielstaleiny/archive-cuet.git"
+  },
+  "keywords": [
+    "archive",
+    "cuet"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danielstaleiny/archive-cuet/issues"
+  },
+  "homepage": "https://github.com/danielstaleiny/archive-cuet#readme",
+  "dependencies": {
+    "aws-sdk": "^2.395.0",
+    "cheerio": "^1.0.0-rc.2",
+    "dotenv": "^6.2.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  },
+  "devDependencies": {
+    "jest": "^24.0.0",
+    "nodemon": "^1.18.9",
+    "prettier": "^1.16.3"
+  },
+  "prettier": {
+    "tabWidth": 4,
+    "semi": false,
+    "singleQuote": true,
+    "bracketSpacing": true
+  }
+}
