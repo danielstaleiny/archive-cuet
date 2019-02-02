@@ -23,5 +23,5 @@ log('starting S3')
 s3.fetchAndUpload('dsa')
 log('End S3')
 
-const uri = `${https}${URL}${addQuery(options)}`
-run(uri).catch(err)
+const uri = `${https}${URL}`
+run(uri, options).catch(err)

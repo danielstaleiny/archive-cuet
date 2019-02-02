@@ -7,7 +7,7 @@ const PassThroughStream = require('stream').PassThrough
 // Get the env variables
 const { AWS_USER_KEY, AWS_USER_SECRET, AWS_BUCKET_NAME } = process.env
 if (!AWS_USER_KEY || !AWS_USER_SECRET || !AWS_BUCKET_NAME)
-    throw new Error("URL is not define, don't know what to scrape.")
+    throw new Error("AWS ENV is not define, don't know what to scrape.")
 
 const s3bucket = new AWS.S3({
     accessKeyId: AWS_USER_KEY,
