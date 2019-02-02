@@ -3,7 +3,7 @@ const { log, err, addQuery } = require('./helpers')
 const scrapeAllLinks = require('./scrape.js')
 const scrapePage = require('./scrape-page.js')
 const s3 = require('./s3')
-const db = require('./db')
+// const db = require('./db')
 
 const https = `https://`
 
@@ -19,12 +19,14 @@ const options = {
     DocumentTypeCode: ''
 }
 
-log('starting S3')
-s3.fetchAndUpload(
-    'http://nextweek.cz/front-assets/images/logo-250-gradient.png'
-)
-log('End S3')
+// s3.fetchAndUpload(
+//     'http://nextweek.cz/front-assets/images/logo-250-gradient.png'
+// )
 
 const uri = `${https}${URL}`
 // scrapeAllLinks(uri, options)
-// scrapePage(uri + '/sk/dokument/1b3c89ad-46f4-4a5e-80d8-08a5187dfcd3').catch(err)
+const daco = scrapePage(
+    uri + '/sk/dokument/94f4b382-fae6-4380-9672-51ddd96978dd'
+).catch(err)
+
+console.log(daco)

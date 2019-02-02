@@ -16,17 +16,36 @@ const rp = require('request-promise-native')
 // }
 
 const scrapePage = async page => {
-    console.log(page)
+    log(page)
     const html = await rp(page)
-    const $ = cheerio.load(html)
-    const board = $('.metadataDocumentName', 'div.item3')
-        .parent()
-        .html()
-    // const board2 = $('div.item3')
-    //     .find('.metadataDocumentName')
-    //     .text()
-    console.log(board)
-    // console.log(board2)
+    const result = []
+    const $ = cheerio.load(html, {
+        decodeEntities: false
+    })
+    const board = $('div.item3')
+
+    board.map((i, elm) => {
+        item = $(elm).html()
+
+        const fetched = cleanText(item)
+
+        result.push({ name: fetched[1], value: fetched[2].trim() })
+    })
+
+    return result
+}
+
+const cleanText = input => {
+    const regex = /\<div class=\"metadataDocumentName\"\>(.*):\<\/div\>(.*)/gms
+    let m
+
+    while ((m = regex.exec(input)) !== null) {
+        // This is necessary to avoid infinite loops with zero-width matches
+        if (m.index === regex.lastIndex) {
+            regex.lastIndex++
+        }
+        return m
+    }
 }
 
 module.exports = scrapePage
