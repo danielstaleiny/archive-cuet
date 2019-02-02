@@ -3,6 +3,8 @@ const cheerio = require('cheerio')
 const rp = require('request-promise-native')
 const { log, err, addQuery } = require('./helpers')
 const run = require('./scrape.js')
+const s3 = require('./s3')
+
 const https = `https://`
 
 const { URL } = process.env
@@ -16,6 +18,10 @@ const options = {
     AlternativeTypeCode: '',
     DocumentTypeCode: ''
 }
+
+log('starting S3')
+s3.fetchAndUpload('dsa')
+log('End S3')
 
 const uri = `${https}${URL}${addQuery(options)}`
 run(uri).catch(err)
