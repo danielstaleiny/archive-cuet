@@ -15,7 +15,7 @@ const getLinks = page => {
         .get()
 }
 
-const run = async (uri, options = {}) => {
+const scrapeAllLinks = async (uri, options = {}) => {
     console.log(uri)
     const url = `${uri}${addQuery(options)}`
     const html = await rp(url)
@@ -47,4 +47,4 @@ const run = async (uri, options = {}) => {
     console.log(data.length)
 }
 
-module.exports = run
+module.exports = scrapeAllLinks

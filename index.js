@@ -1,8 +1,7 @@
 require('dotenv').config() // load .env
-const cheerio = require('cheerio')
-const rp = require('request-promise-native')
 const { log, err, addQuery } = require('./helpers')
-const run = require('./scrape.js')
+const scrapeAllLinks = require('./scrape.js')
+const scrapePage = require('./scrape-page.js')
 const s3 = require('./s3')
 
 const https = `https://`
@@ -20,8 +19,9 @@ const options = {
 }
 
 log('starting S3')
-s3.fetchAndUpload('dsa')
+// s3.fetchAndUpload('dsa')
 log('End S3')
 
 const uri = `${https}${URL}`
-run(uri, options).catch(err)
+// scrapeAllLinks(uri, options)
+scrapePage(uri + '/sk/dokument/1b3c89ad-46f4-4a5e-80d8-08a5187dfcd3').catch(err)
