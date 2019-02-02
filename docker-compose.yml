@@ -1,0 +1,20 @@
+version: '3'
+services:
+  postgres_data:
+    image: busybox
+    container_name: crut-pg-data
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  postgres:
+    image: postgres:9.6
+    container_name: crut-pg
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: pw
+      POSTGRES_USER: root
+      POSTGRES_DB: crut-development
+    volumes:
+      - db-data:/var/lib/postgresql/data
+volumes:
+  db-data:
