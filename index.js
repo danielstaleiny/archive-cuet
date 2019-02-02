@@ -20,9 +20,11 @@ const options = {
 }
 
 log('starting S3')
-// s3.fetchAndUpload('dsa')
+s3.fetchAndUpload(
+    'http://nextweek.cz/front-assets/images/logo-250-gradient.png'
+)
 log('End S3')
 
 const uri = `${https}${URL}`
 // scrapeAllLinks(uri, options)
-scrapePage(uri + '/sk/dokument/1b3c89ad-46f4-4a5e-80d8-08a5187dfcd3').catch(err)
+// scrapePage(uri + '/sk/dokument/1b3c89ad-46f4-4a5e-80d8-08a5187dfcd3').catch(err)
