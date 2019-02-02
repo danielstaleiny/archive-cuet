@@ -3,7 +3,8 @@ const { log, err, addQuery } = require('./helpers')
 const scrapeAllLinks = require('./scrape.js')
 const scrapePage = require('./scrape-page.js')
 const s3 = require('./s3')
-// const db = require('./db')
+const client = require('./init-db')
+const { test } = require('./db')
 
 const https = `https://`
 
@@ -30,3 +31,4 @@ const daco = scrapePage(
 ).catch(err)
 
 console.log(daco)
+test()

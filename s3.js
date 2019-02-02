@@ -17,7 +17,6 @@ const s3bucket = new S3({
 function uploadFromStream(url) {
     const body = new stream.PassThrough()
     const key = url.slice(url.lastIndexOf('/') + 1)
-    console.log(key)
     let mine = null
     switch (url.slice(url.lastIndexOf('.'))) {
         case '.png':
@@ -127,7 +126,7 @@ exports.fetchAndUpload = url => {
             })
             .pipe(uploadFromStream(url))
             .on('end', function(res) {
-                resolve(res)
+                resolve('done')
             })
     })
 }
