@@ -1,4 +1,4 @@
-const { log, err, addQuery } = require('./helpers')
+const { log, parseAttachmentInfo } = require('./helpers')
 const cheerio = require('cheerio')
 const rp = require('request-promise-native')
 const camelCase = require('camelcase')
@@ -78,9 +78,14 @@ const findAttachments = $ => {
                     item = $(elm).html()
                     const fetched = cleanText(item, $)
 
-                    if (fetched.lable == 'attachmentName')
+                    if (fetched.lable == 'attachmentName') {
                         attachment.name = fetched.value
-                    console.log(fetched.lable)
+                    }
+                    if (fetched.lable == 'typeAndSize') {
+                        const attachInfo = parseAttachmentInfo(fetched.value)
+                        attachment.fileSize = attachInfo.fileSize
+                        attachment.mimeType = attachInfo.mimeType
+                    }
                 })
             }
 
