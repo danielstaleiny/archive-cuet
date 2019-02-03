@@ -26,7 +26,7 @@ const parseDocumentInfo = $ => {
 
     const items = $('.metadataDocumentName').parent()
     items.map((i, elm) => {
-        item = $(elm).html()
+        const item = $(elm).html()
         const fetched = parseItem(item, $)
 
         // Ignore attachments info.
@@ -50,7 +50,7 @@ const parseAttachments = $ => {
 
     // Iterate over the attachmets.
     attachmetsHTML.map((i, attachWrap) => {
-        buttons = $(attachWrap).find('a')
+        const buttons = $(attachWrap).find('a')
 
         const attachment = {}
 
@@ -71,7 +71,7 @@ const parseAttachments = $ => {
                     .parent()
 
                 appachmentWrap.map((i, elm) => {
-                    item = $(elm).html()
+                    const item = $(elm).html()
                     const fetched = parseItem(item, $)
 
                     if (fetched.lable == 'attachmentName') {
