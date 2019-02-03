@@ -1,8 +1,10 @@
 const fileSizeParser = require('filesize-parser')
 
+// TODO change this to actual logger
 exports.log = (...args) =>
     console.log(`${new Date().toISOString()} ${args.join('')}`)
 
+// DEPRECATED
 exports.err = (...args) =>
     console.trace(`${new Date().toISOString()} ${args.join('')}`)
 
