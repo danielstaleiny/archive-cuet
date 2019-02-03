@@ -1,12 +1,17 @@
 require('dotenv').config() // load .env
-const { Pool, Client } = require('pg')
-const client = new Client({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASS,
-    port: process.env.DB_PORT
-})
-client.connect()
+const { DB_USER, DB_HOST, DB_NAME, DB_PASS, DB_PORT } = process.env
 
-module.exports = client
+const knex = require('knex')({
+    client: 'pg',
+    connection: {
+        host: DB_HOST,
+        port: DB_PORT,
+        user: DB_USER,
+        password: DB_PASS,
+        database: DB_NAME
+    }
+})
+
+const bookshelf = require('bookshelf')(knex)
+
+module.exports = bookshelf

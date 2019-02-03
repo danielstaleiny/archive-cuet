@@ -3,8 +3,8 @@ const { log, err, addQuery } = require('./helpers')
 const scrapeAllLinks = require('./scrape.js')
 const scrapePage = require('./scrape-page.js')
 const s3 = require('./s3')
-const client = require('./init-db')
-const { test } = require('./db')
+// const client = require('./init-db')
+// const { Document, Attachment, test } = require('./db')
 
 const https = `https://`
 
@@ -20,15 +20,12 @@ const options = {
     DocumentTypeCode: ''
 }
 
-// s3.fetchAndUpload(
-//     'http://nextweek.cz/front-assets/images/logo-250-gradient.png'
-// )
-
 const uri = `${https}${URL}`
-// scrapeAllLinks(uri, options)
-const daco = scrapePage(
-    uri + '/sk/dokument/94f4b382-fae6-4380-9672-51ddd96978dd'
-).catch(err)
 
-console.log(daco)
-test()
+// s3.fetchAndUpload(uri + '/en/priloha/uloz/d09e122b-addf-457e-8ba5-66893b0687af')
+// scrapeAllLinks(uri, options)
+// scrapePage(uri + '/en/dokument/94f4b382-fae6-4380-9672-51ddd96978dd')
+// .then(array => {
+// console.log(array)
+// })
+// .catch(err)

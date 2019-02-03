@@ -25,7 +25,7 @@ const scrapePage = async page => {
     const board = $('div.item3')
 
     board.map((i, elm) => {
-        item = $(elm).html()
+        const item = $(elm).html()
 
         const fetched = cleanText(item)
 

@@ -14,7 +14,9 @@ const s3bucket = new S3({
     secretAccessKey: AWS_USER_SECRET
 })
 
-function uploadFromStream(url) {
+// uploadFromStream :: Object -> Stream
+function uploadFromStream({ url, name, type } = {}) {
+    if (!url) throw new Error('url missing in Object arguments')
     const body = new stream.PassThrough()
     const key = url.slice(url.lastIndexOf('/') + 1)
     let mine = null
@@ -106,25 +108,27 @@ function uploadFromStream(url) {
 
     var params = {
         Bucket: AWS_BUCKET_NAME,
-        Key: key,
+        Key: name || key,
         Body: body,
-        ContentType: mine
+        ContentType: type || mine
     }
     s3bucket.upload(params, (err, done) => {
-        if (err) console.trace(err)
+        if (err) console.log(err)
         // else console.log(done) // for debugging, will return the image detail
     })
     return body
 }
 
-exports.fetchAndUpload = url => {
+// fetchAndUpload :: Object({key,name?,type?}) -> Promise
+exports.fetchAndUpload = (args = {}) => {
     return new Promise((resolve, reject) => {
+        if (!args.url) throw new Error('url missing in Object arguments')
         request
-            .get(url)
+            .get(args.url)
             .on('error', function(err) {
                 reject(err)
             })
-            .pipe(uploadFromStream(url))
+            .pipe(uploadFromStream(args))
             .on('end', function(res) {
                 resolve('done')
             })
