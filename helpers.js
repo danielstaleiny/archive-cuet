@@ -41,8 +41,6 @@ exports.parseAttachmentInfo = input => {
     }
 }
 
-// console.log(sizeParse('450,9 kB'))
-
 // 450,9 kB  -> to bytes
 exports.sizeParse = size => {
     return fileSizeParser(size.replace(' ', '').toUpperCase())

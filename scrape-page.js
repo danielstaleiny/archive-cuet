@@ -1,4 +1,4 @@
-const { log, parseAttachmentInfo } = require('./helpers')
+const { log, parseAttachmentInfo, sizeParse } = require('./helpers')
 const cheerio = require('cheerio')
 const rp = require('request-promise-native')
 const camelCase = require('camelcase')
@@ -13,21 +13,21 @@ const scrapePage = async page => {
     })
 
     // Fetch document info.
-    const info = findItems($)
+    const info = parseDocumentInfo($)
 
-    const attachments = findAttachments($)
-    info.attachments = attachments
+    // Fetch all document attachments.
+    info.attachments = parseAttachments($)
 
     return info
 }
 
-const findItems = $ => {
+const parseDocumentInfo = $ => {
     const result = {}
 
     const items = $('.metadataDocumentName').parent()
     items.map((i, elm) => {
         item = $(elm).html()
-        const fetched = cleanText(item, $)
+        const fetched = parseItem(item, $)
 
         // Ignore attachments info.
         if (
@@ -43,53 +43,49 @@ const findItems = $ => {
     return result
 }
 
-const findAttachments = $ => {
+const parseAttachments = $ => {
     const attachmets = []
 
-    const attachmetsTemp = $('.attachmentWrapper')
+    const attachmetsHTML = $('.attachmentWrapper')
 
-    // Iterate over attachmets.
-    attachmetsTemp.map((i, attachWrap) => {
+    // Iterate over the attachmets.
+    attachmetsHTML.map((i, attachWrap) => {
         buttons = $(attachWrap).find('a')
 
-        let attachment = {
-            name: null,
-            fileSize: null,
-            mimeType: null,
-            path: null,
-            pathOrig: null
-        }
+        const attachment = {}
 
+        // Iterate over the attachment buttons
         buttons.map((i, elmBtn) => {
             const btn = $(elmBtn).html()
-            let label = camelCase(btn.trim())
+            let label = camelCase(btn.trim()) // Camelcase of button text.
 
             // Link to download attachment and fetch attachment info
             if (label === 'saveAttachment') {
-                attachment.path = $(elmBtn).attr('href')
+                attachment.path = $(elmBtn).attr('href') // Path to download an attachment.
 
-                let appachmentsWrap = $(elmBtn)
+                // Parse attachment info.
+                let appachmentWrap = $(elmBtn)
                     .parent()
                     .parent()
                     .find('.metadataDocumentName')
                     .parent()
 
-                appachmentsWrap.map((i, elm) => {
+                appachmentWrap.map((i, elm) => {
                     item = $(elm).html()
-                    const fetched = cleanText(item, $)
+                    const fetched = parseItem(item, $)
 
                     if (fetched.lable == 'attachmentName') {
                         attachment.name = fetched.value
                     }
                     if (fetched.lable == 'typeAndSize') {
                         const attachInfo = parseAttachmentInfo(fetched.value)
-                        attachment.fileSize = attachInfo.fileSize
+                        attachment.fileSize = sizeParse(attachInfo.fileSize)
                         attachment.mimeType = attachInfo.mimeType
                     }
                 })
             }
 
-            // Link to original attachment
+            // Path to original attachment if exists.
             if (label === 'saveOriginalAttachment') {
                 attachment.pathOrig = $(elmBtn).attr('href')
             }
@@ -101,8 +97,8 @@ const findAttachments = $ => {
     return attachmets
 }
 
-const cleanText = (input, $) => {
-    const regex = /\<div class=\"metadataDocumentName\"\>(.*):\<\/div\>(.*)/gms // TODO: upravid regex s $ a ^ pre zaciatok a koniec stringu
+const parseItem = (input, $) => {
+    const regex = /\<div class=\"metadataDocumentName\"\>(.*):\<\/div\>(.*)/gms
     let m
 
     while ((m = regex.exec(input)) !== null) {
