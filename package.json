@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "description": "Archive for Slovak Central electronic bureau dashboard (Centrálnej elektronickej úradnej tabuli)",
     "main": "index.js",
+    "engines": {
+        "node": ">=8.2.1"
+    },
     "scripts": {
         "test": "jest",
         "dev": "nodemon .",
@@ -24,11 +27,11 @@
     "dependencies": {
         "aws-sdk": "^2.395.0",
         "bookshelf": "^0.14.2",
+        "camelcase": "^5.0.0",
         "cheerio": "^1.0.0-rc.2",
         "dotenv": "^6.2.0",
-        "knex": "^0.13.0",
-        "camelcase": "^5.0.0",
         "filesize-parser": "^1.5.0",
+        "knex": "^0.13.0",
         "pg": "^7.8.0",
         "request": "^2.88.0",
         "request-promise-native": "^1.0.5",

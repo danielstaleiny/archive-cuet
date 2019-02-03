@@ -1,3 +1,5 @@
+const fileSizeParser = require('filesize-parser')
+
 exports.log = (...args) =>
     console.log(`${new Date().toISOString()} ${args.join('')}`)
 
@@ -37,4 +39,11 @@ exports.parseAttachmentInfo = input => {
 
         return item
     }
+}
+
+// console.log(sizeParse('450,9 kB'))
+
+// 450,9 kB  -> to bytes
+exports.sizeParse = size => {
+    return fileSizeParser(size.replace(' ', '').toUpperCase())
 }

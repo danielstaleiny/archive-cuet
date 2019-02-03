@@ -83,6 +83,10 @@ exports.test = async obj => {
 //     '<div class="encodedArea">Rozhodnutie o vyhlásení Mosta SNP za Národnú kultúrnu pamiatku (NKP), zmena rozsahu vyhláseného Pamiatkovým úradom SR.</div>'
 // }
 
+const filesizeParser = require('filesize-parser')
+
+// filesizeParser(size)// put to attachments
+
 // Document.save({
 //     publisher: test1.publishedOnOfficialBoard,
 //     published_date: new Date(...test1.publishedFrom.split('.')),
