@@ -19,8 +19,27 @@ describe('helpers.js', () => {
     })
 
     describe('parseAttachmentInfo', () => {
-        test('test', () => {
-            expect('a').toBe('a')
+        test('pdf test', () => {
+            expect(
+                parseAttachmentInfo(
+                    '<img src=“/Content/Img/pdf.png” alt=“file icon: application/pdf”>450.9 kB'
+                )
+            ).toBe({
+                mimeType: 'application/pdf',
+                fileSize: '450.9 kB'
+            })
+        })
+
+        test('pdf test', () => {
+            expect(
+                parseAttachmentInfo(
+                    '<img src=“/Content/Img/doc.png” alt=“file icon: application/vnd.openxmlformats-officedocument.wordprocessingml.document”>105.7 kB'
+                )
+            ).toBe({
+                mimeType:
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                fileSize: '105.7 kB'
+            })
         })
     })
 

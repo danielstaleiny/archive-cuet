@@ -8,13 +8,13 @@ exports.log = (...args) =>
 exports.err = (...args) =>
     console.trace(`${new Date().toISOString()} ${args.join('')}`)
 
-// genQuery :: (String, String) => String
+// genQuery :: (String, String) -> String
 const genQuery = (key, value) => `&${key}=${value}`
 
-// genQuery :: (String, String) => String
+// genQuery :: (String, String) -> String
 const startQuery = (key, value) => `?${key}=${value}`
 
-// addQuery :: Object => String
+// addQuery :: Object -> String
 exports.addQuery = obj => {
     let result = ''
     for (const prop in obj) {
@@ -24,6 +24,7 @@ exports.addQuery = obj => {
     return result
 }
 
+// parseAttachmentInfo :: String -> Object
 exports.parseAttachmentInfo = input => {
     const regex = /\<img.*alt\=\"file icon: (.*)\"\>\s*([0-9]+\.[0-9]*\s[a-zA-Z]{2})/gms
     let m
@@ -44,6 +45,7 @@ exports.parseAttachmentInfo = input => {
 }
 
 // 450,9 kB  -> to bytes
+// size :: String -> Int
 exports.sizeParse = size => {
     return fileSizeParser(size.replace(' ', '').toUpperCase())
 }
