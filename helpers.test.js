@@ -1,4 +1,4 @@
-const { log, addQuery, parseAttachmentInfo, sizeParse } = require('./helpers')
+const { addQuery, parseAttachmentInfo, sizeParse } = require('./helpers')
 
 describe('helpers.js', () => {
     describe('addQuery', () => {
@@ -22,9 +22,9 @@ describe('helpers.js', () => {
         test('pdf test', () => {
             expect(
                 parseAttachmentInfo(
-                    '<img src=“/Content/Img/pdf.png” alt=“file icon: application/pdf”>450.9 kB'
+                    '<img src="/Content/Img/pdf.png" alt="file icon: application/pdf">                    450.9 kB'
                 )
-            ).toBe({
+            ).toEqual({
                 mimeType: 'application/pdf',
                 fileSize: '450.9 kB'
             })
@@ -33,9 +33,9 @@ describe('helpers.js', () => {
         test('pdf test', () => {
             expect(
                 parseAttachmentInfo(
-                    '<img src=“/Content/Img/doc.png” alt=“file icon: application/vnd.openxmlformats-officedocument.wordprocessingml.document”>105.7 kB'
+                    '<img src="/Content/Img/doc.png" alt="file icon: application/vnd.openxmlformats-officedocument.wordprocessingml.document">105.7 kB'
                 )
-            ).toBe({
+            ).toEqual({
                 mimeType:
                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                 fileSize: '105.7 kB'

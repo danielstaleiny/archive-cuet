@@ -1,5 +1,5 @@
 require('dotenv').config() // load .env
-const { log, err, addQuery, sizeParse } = require('./helpers')
+const { log } = require('./helpers')
 const scrapeAllLinks = require('./scrape.js')
 const scrapePage = require('./scrape-page.js')
 const s3 = require('./s3')
