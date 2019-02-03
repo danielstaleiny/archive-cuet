@@ -1,42 +1,103 @@
 const { log, err, addQuery } = require('./helpers')
 const cheerio = require('cheerio')
 const rp = require('request-promise-native')
-
-// const getLinks = page => {
-//     const $ = cheerio.load(page)
-//     return $('div.resultItem', 'div.searchWrapper')
-//         .map((i, el) => {
-//             return {
-//                 link: $(el)
-//                     .find('a', '.button')
-//                     .attr('href')
-//             }
-//         })
-//         .get()
-// }
+const camelCase = require('camelcase')
 
 const scrapePage = async page => {
-    log(page)
+    log('fetching page: ', page)
     const html = await rp(page)
-    const result = []
+
+    // Parse html from fetched page.
     const $ = cheerio.load(html, {
         decodeEntities: false
     })
-    const board = $('div.item3')
 
-    board.map((i, elm) => {
-        const item = $(elm).html()
+    // Fetch document info.
+    const info = findItems($)
 
-        const fetched = cleanText(item)
+    const attachments = findAttachments($)
+    info.attachments = attachments
 
-        result.push({ name: fetched[1], value: fetched[2].trim() })
+    return info
+}
+
+const findItems = $ => {
+    const result = {}
+
+    const items = $('.metadataDocumentName').parent()
+    items.map((i, elm) => {
+        item = $(elm).html()
+        const fetched = cleanText(item, $)
+
+        // Ignore attachments info.
+        if (
+            fetched.lable == 'attachmentName' ||
+            fetched.lable == 'typeAndSize' ||
+            fetched.lable == undefined
+        ) {
+            return
+        }
+
+        result[fetched.lable] = fetched.value
     })
-
     return result
 }
 
-const cleanText = input => {
-    const regex = /\<div class=\"metadataDocumentName\"\>(.*):\<\/div\>(.*)/gms
+const findAttachments = $ => {
+    const attachmets = []
+
+    const attachmetsTemp = $('.attachmentWrapper')
+
+    // Iterate over attachmets.
+    attachmetsTemp.map((i, attachWrap) => {
+        buttons = $(attachWrap).find('a')
+
+        let attachment = {
+            name: null,
+            fileSize: null,
+            mimeType: null,
+            path: null,
+            pathOrig: null
+        }
+
+        buttons.map((i, elmBtn) => {
+            const btn = $(elmBtn).html()
+            let label = camelCase(btn.trim())
+
+            // Link to download attachment and fetch attachment info
+            if (label === 'saveAttachment') {
+                attachment.path = $(elmBtn).attr('href')
+
+                let appachmentsWrap = $(elmBtn)
+                    .parent()
+                    .parent()
+                    .find('.metadataDocumentName')
+                    .parent()
+
+                appachmentsWrap.map((i, elm) => {
+                    item = $(elm).html()
+                    const fetched = cleanText(item, $)
+
+                    if (fetched.lable == 'attachmentName')
+                        attachment.name = fetched.value
+                    console.log(fetched.lable)
+                })
+            }
+
+            // Link to original attachment
+            if (label === 'saveOriginalAttachment') {
+                attachment.pathOrig = $(elmBtn).attr('href')
+            }
+        })
+
+        attachmets.push(attachment)
+    })
+
+    return attachmets
+}
+
+const cleanText = (input, $) => {
+    const regex = /\<div class=\"metadataDocumentName\"\>(.*):\<\/div\>(.*)/gms // TODO: upravid regex s $ a ^ pre zaciatok a koniec stringu
     let m
 
     while ((m = regex.exec(input)) !== null) {
@@ -44,8 +105,18 @@ const cleanText = input => {
         if (m.index === regex.lastIndex) {
             regex.lastIndex++
         }
-        return m
+
+        const label = camelCase(m[1])
+        const value = m[2].trim()
+
+        let item = {
+            lable: label,
+            value: value
+        }
+
+        return item
     }
+    return []
 }
 
 module.exports = scrapePage
