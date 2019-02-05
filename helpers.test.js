@@ -30,7 +30,7 @@ describe('helpers.js', () => {
             })
         })
 
-        test('pdf test', () => {
+        test('word document test', () => {
             expect(
                 parseAttachmentInfo(
                     '<img src="/Content/Img/doc.png" alt="file icon: application/vnd.openxmlformats-officedocument.wordprocessingml.document">105.7 kB'
@@ -44,8 +44,14 @@ describe('helpers.js', () => {
     })
 
     describe('sizeParse', () => {
-        test('test', () => {
-            expect('a').toBe('a')
+        test('convert kB', () => {
+            expect(sizeParse('100 kB')).toEqual(102400)
+        })
+        test('convert kB with decimal', () => {
+            expect(sizeParse('100,9 kB')).toEqual(103322)
+        })
+        test('convert KB with decimal', () => {
+            expect(sizeParse('100,9 kB')).toEqual(103322)
         })
     })
 })

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.2-alpha1" last-position="0,0" last-zoom="1" max-obj-count="4"
+	 default-schema="public">
+<database name="cuet" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="documents" layer="0" collapse-mode="1" max-obj-count="13">
+	<schema name="public"/>
+	<position x="60" y="120"/>
+	<column name="id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="url" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="publisher">
+		<type name="text" length="0"/>
+	</column>
+	<column name="published_date">
+		<type name="date" length="0"/>
+	</column>
+	<column name="closed_date">
+		<type name="date" length="0"/>
+	</column>
+	<column name="author">
+		<type name="text" length="0"/>
+	</column>
+	<column name="registry_symbol">
+		<type name="text" length="0"/>
+	</column>
+	<column name="registry_case">
+		<type name="text" length="0"/>
+	</column>
+	<column name="name_of_document">
+		<type name="text" length="0"/>
+	</column>
+	<column name="description">
+		<type name="text" length="0"/>
+	</column>
+	<column name="history">
+		<type name="json" length="0"/>
+	</column>
+	<constraint name="documents_pk" type="pk-constr" table="public.documents">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="url_unique" type="uq-constr" table="public.documents">
+		<columns names="url" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="attachments" layer="0" collapse-mode="1" max-obj-count="9">
+	<schema name="public"/>
+	<position x="480" y="120"/>
+	<column name="id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="url" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="path" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="path_origin">
+		<type name="text" length="0"/>
+	</column>
+	<column name="id_ref" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="size">
+		<type name="float" length="0"/>
+		<comment><![CDATA[in bytes]]></comment>
+	</column>
+	<column name="type">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="attachments_pk" type="pk-constr" table="public.attachments">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_documents" index="7"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="documents_fk" index="1"/>
+	</customidxs>
+</table>
+
+<relationship name="documents_has_many_attachments" type="rel1n" layer="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#3c75b0"
+	 src-table="public.documents"
+	 dst-table="public.attachments"
+	 src-required="false" dst-required="false"/>
+
+<index name="url_index" table="public.documents"
+	 concurrent="false" unique="false" fast-update="false" buffering="false"
+	 index-type="btree" factor="0">
+		<idxelement use-sorting="false">
+			<column name="url"/>
+		</idxelement>
+</index>
+
+<domain name="cuet" not-null="false">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<type name="smallint" length="0"/>
+</domain>
+
+</dbmodel>

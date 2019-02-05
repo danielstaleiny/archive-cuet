@@ -1,20 +1,25 @@
-version: '3'
+version: '3.2'
 services:
-  postgres_data:
-    image: busybox
-    container_name: crut-pg-data
-    volumes:
-      - db-data:/var/lib/postgresql/data
-  postgres:
+
+  # postgres_data:
+  #   image: busybox
+  #   container_name: cuet-pg-data
+  #   volumes:
+  #     - db-data:/var/lib/postgresql/data
+
+  db:
     image: postgres:9.6
-    container_name: crut-pg
+    container_name: cuet-pg
+    # restart: always
     ports:
-      - "5432:5432"
+      - 5432:5432
     environment:
       POSTGRES_PASSWORD: pw
-      POSTGRES_USER: user
-      POSTGRES_DB: crut-dev
+      POSTGRES_USER: admin
+      POSTGRES_DB: cuet-dev
     volumes:
       - db-data:/var/lib/postgresql/data
+      - ./db/migrations/init.sql:/docker-entrypoint-initdb.d/init.sql
+
 volumes:
   db-data:
