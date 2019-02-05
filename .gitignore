@@ -59,3 +59,7 @@ typings/
 
 # next.js build output
 .next
+
+# ignore tern-port anywhere in project
+.tern-port
+**/.tern-port
